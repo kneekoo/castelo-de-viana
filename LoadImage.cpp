@@ -34,6 +34,7 @@
 
 using std::vector;
 using std::array;
+using std::string;
 
 #include "NativeBitmap.h"
 #include "LoadImage.h"
@@ -71,7 +72,7 @@ namespace odb {
     }
 
 
-    vector<char> loadBinaryFileFromPath(const std::string &path) {
+    vector<char> loadBinaryFileFromPath(const string &path) {
         FILE *fd;
 
         fd = fopen(path.c_str(), "rb");
@@ -86,7 +87,7 @@ namespace odb {
         return toReturn;
     }
 
-    std::shared_ptr<NativeBitmap> loadBitmap(std::string path) {
+    std::shared_ptr<NativeBitmap> loadBitmap(string path) {
 
         //std::cout << "loading " << path << std::endl;
 

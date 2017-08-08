@@ -4,7 +4,7 @@
 
 namespace odb {
 
-    std::shared_ptr<NativeBitmap> loadBitmap(std::string path);
+    std::shared_ptr<NativeBitmap> loadBitmap(string path);
 
 }
 #endif

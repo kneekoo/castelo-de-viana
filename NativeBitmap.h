@@ -6,13 +6,13 @@
 #define LESSON10_NATIVEBITMAP_H
 namespace odb {
     class NativeBitmap {
-        std::string mId;
+        string mId;
         int mWidth;
         int mHeight;
         int *mRawData;
 
     public:
-        NativeBitmap(std::string aId, int aWidth, int aHeight, int *aRawData);
+        NativeBitmap(string aId, int aWidth, int aHeight, int *aRawData);
 
         std::shared_ptr<NativeBitmap> makeBitmapWithHalfDimensions() const;
 
@@ -22,7 +22,7 @@ namespace odb {
 
         int *getPixelData() const;
 
-        std::string getId() const;
+        string getId() const;
 
         void releaseTextureData();
 

@@ -17,6 +17,7 @@
 
 using std::vector;
 using std::array;
+using std::string;
 
 #include "Game.h"
 
@@ -50,7 +51,7 @@ vector<int> melody{};
 
 vector<int> currentSound = bgSound;
 vector<int>::const_iterator currentSoundPosition = std::begin(bgSound);
-std::string currentBossName;
+string currentBossName;
 EScreen screen = kIntro;
 
 void evalutePlayerAttack();
@@ -708,9 +709,9 @@ void prepareRoom(int room) {
     roomName << ".lst";
 
     std::ifstream tileList(roomName.str());
-    std::string buffer;
+    string buffer;
 
-    vector<std::string> tilesToLoad;
+    vector<string> tilesToLoad;
 
     while (tileList.good()) {
         std::getline(tileList, buffer);

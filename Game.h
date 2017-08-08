@@ -70,7 +70,7 @@ extern vector<Actor> arrows;
 extern vector<int> melody;
 extern std::shared_ptr<odb::NativeBitmap> currentScreen;
 extern EScreen screen;
-extern std::string currentBossName;
+extern string currentBossName;
 extern int totalBossHealth;
 extern void clearBuffers();
 
@@ -78,7 +78,7 @@ void init();
 
 void gameTick(bool &isOnGround, bool &isOnStairs);
 
-void loadTiles(vector<std::string> tilesToLoad);
+void loadTiles(vector<string> tilesToLoad);
 
 void
 updateHero(bool isOnGround, bool isJumping, bool isUpPressed, bool isDownPressed, bool isLeftPressed, bool isAttacking,
@@ -93,6 +93,6 @@ void prepareScreenFor(EScreen screenState);
 
 void playSound(const vector<int> &sound);
 
-void playMusic(const std::string &music);
+void playMusic(const string &music);
 
 #endif

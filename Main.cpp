@@ -17,6 +17,7 @@
 
 using std::vector;
 using std::array;
+using std::string;
 
 #include "NativeBitmap.h"
 #include "LoadImage.h"
@@ -143,9 +144,9 @@ void clearBuffers() {
     std::fill(std::begin(oddBuffer), std::end(oddBuffer), 0);
 }
 
-vector<std::shared_ptr<odb::NativeBitmap>> loadSpriteList(std::string listName) {
+vector<std::shared_ptr<odb::NativeBitmap>> loadSpriteList(string listName) {
     std::ifstream tileList(listName);
-    std::string buffer;
+    string buffer;
 
     vector<std::shared_ptr<odb::NativeBitmap>> tilesToLoad;
 
@@ -156,7 +157,7 @@ vector<std::shared_ptr<odb::NativeBitmap>> loadSpriteList(std::string listName) 
     return tilesToLoad;
 }
 
-void loadTiles(vector<std::string> tilesToLoad) {
+void loadTiles(vector<string> tilesToLoad) {
     tiles.clear();
 
     for (const auto &tile : tilesToLoad) {

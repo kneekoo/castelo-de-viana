@@ -3,6 +3,9 @@
 ////
 #include <memory>
 #include <string>
+
+using std::string;
+
 #include "NativeBitmap.h"
 
 namespace odb {
@@ -18,11 +21,11 @@ namespace odb {
         return this->mRawData;
     }
 
-    std::string NativeBitmap::getId() const {
+    string NativeBitmap::getId() const {
         return mId;
     }
 
-    NativeBitmap::NativeBitmap(std::string aId, int aWidth, int aHeight, int *aRawData) :
+    NativeBitmap::NativeBitmap(string aId, int aWidth, int aHeight, int *aRawData) :
             mId(aId), mWidth(aWidth), mHeight(aHeight), mRawData(aRawData) {
     }
 

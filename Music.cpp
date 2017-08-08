@@ -14,17 +14,18 @@
 #include <memory>
 #include <fstream>
 #include <sstream>
-#include "NativeBitmap.h"
 #include <string>
 #include <vector>
 
 using std::vector;
 using std::array;
+using std::string;
 
+#include "NativeBitmap.h"
 #include "LoadImage.h"
 #include "Game.h"
 
-void playMusic(const std::string &music) {
+void playMusic(const string &music) {
     int frequency = 0;
     melody.clear();
     for (const auto &note : music) {
