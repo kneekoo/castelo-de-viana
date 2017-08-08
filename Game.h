@@ -55,18 +55,19 @@ extern Actor player;
 extern bool hasKey;
 extern bool hasBossOnScreen;
 extern int counter;
+extern int altCounter;
 extern int room;
 extern bool paused;
 extern int heroFrame;
 extern int ticksUntilVulnerable;
 extern int ticksToShowHealth;
-extern std::array<std::array<int, 10>, 6> backgroundTiles;
-extern std::array<std::array<int, 10>, 6> foregroundTiles;
-extern std::vector<Actor> foes;
-extern std::vector<Item> items;
-extern std::vector<Actor> doors;
-extern std::vector<Actor> arrows;
-extern std::vector<int> melody;
+extern array<array<int, 10>, 6> backgroundTiles;
+extern array<array<int, 10>, 6> foregroundTiles;
+extern vector<Actor> foes;
+extern vector<Item> items;
+extern vector<Actor> doors;
+extern vector<Actor> arrows;
+extern vector<int> melody;
 extern std::shared_ptr<odb::NativeBitmap> currentScreen;
 extern EScreen screen;
 extern std::string currentBossName;
@@ -77,7 +78,7 @@ void init();
 
 void gameTick(bool &isOnGround, bool &isOnStairs);
 
-void loadTiles(std::vector<std::string> tilesToLoad);
+void loadTiles(vector<std::string> tilesToLoad);
 
 void
 updateHero(bool isOnGround, bool isJumping, bool isUpPressed, bool isDownPressed, bool isLeftPressed, bool isAttacking,
@@ -90,7 +91,7 @@ void enforceScreenLimits();
 
 void prepareScreenFor(EScreen screenState);
 
-void playSound(const std::vector<int> &sound);
+void playSound(const vector<int> &sound);
 
 void playMusic(const std::string &music);
 

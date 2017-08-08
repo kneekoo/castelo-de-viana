@@ -15,11 +15,15 @@
 #include <fstream>
 #include <sstream>
 
+using std::vector;
+using std::array;
+
 #include "Game.h"
 
 int heroFrame = 0;
 Actor player;
 int counter = 0;
+int altCounter = 0;
 int room = 0;
 bool hasKey = false;
 int ticksUntilVulnerable = 14;
@@ -28,30 +32,30 @@ int arrowCooldown = 0;
 bool paused = false;
 bool hasBossOnScreen = false;
 
-std::array<std::array<int, 10>, 6> backgroundTiles;
-std::array<std::array<int, 10>, 6> foregroundTiles;
-std::vector<Actor> foes;
-std::vector<Actor> doors;
-std::vector<Item> items;
-std::vector<Actor> arrows;
+array<array<int, 10>, 6> backgroundTiles;
+array<array<int, 10>, 6> foregroundTiles;
+vector<Actor> foes;
+vector<Actor> doors;
+vector<Item> items;
+vector<Actor> arrows;
 
-std::vector<int> bgSound{};
-std::vector<int> hurtSound{400, 300};
-std::vector<int> swordSound{150, 200};
-std::vector<int> arrowSound{500, 600};
-std::vector<int> jumpSound{1000, 2000, 3000, 1500, 500};
-std::vector<int> pickSound{900, 700};
+vector<int> bgSound{};
+vector<int> hurtSound{400, 300};
+vector<int> swordSound{150, 200};
+vector<int> arrowSound{500, 600};
+vector<int> jumpSound{1000, 2000, 3000, 1500, 500};
+vector<int> pickSound{900, 700};
 int totalBossHealth = 0;
-std::vector<int> melody{};
+vector<int> melody{};
 
-std::vector<int> currentSound = bgSound;
-std::vector<int>::const_iterator currentSoundPosition = std::begin(bgSound);
+vector<int> currentSound = bgSound;
+vector<int>::const_iterator currentSoundPosition = std::begin(bgSound);
 std::string currentBossName;
 EScreen screen = kIntro;
 
 void evalutePlayerAttack();
 
-void playSound(const std::vector<int> &sound) {
+void playSound(const vector<int> &sound) {
     if (currentSoundPosition != std::end(currentSound) && currentSound == sound) {
         return;
     }
@@ -68,6 +72,7 @@ void init() {
     player.mType = EActorType::kPlayer;
     player.mStance = kJumping;
     counter = 0;
+    altCounter = 0;
     room = 0;
     hasKey = false;
     prepareRoom(room);
@@ -219,7 +224,7 @@ bool collide(const Actor &a, const Actor &b, int tolerance = 32) {
     return false;
 }
 
-void removeFrom(std::vector<Actor> &mainCollection, std::vector<Actor> &removeList) {
+void removeFrom(vector<Actor> &mainCollection, vector<Actor> &removeList) {
     mainCollection.erase(std::remove_if(std::begin(mainCollection), std::end(mainCollection),
                                         [&](Actor x) {
                                             return std::find(std::begin(removeList), std::end(removeList), x) !=
@@ -229,7 +234,7 @@ void removeFrom(std::vector<Actor> &mainCollection, std::vector<Actor> &removeLi
 }
 
 
-void removeFrom(std::vector<Item> &mainCollection, std::vector<Item> &removeList) {
+void removeFrom(vector<Item> &mainCollection, vector<Item> &removeList) {
     mainCollection.erase(std::remove_if(std::begin(mainCollection), std::end(mainCollection),
                                         [&](Item x) {
                                             return std::find(std::begin(removeList), std::end(removeList), x) !=
@@ -296,6 +301,12 @@ void updateTimers() {
 
 void gameTick(bool &isOnGround, bool &isOnStairs) {
     ++counter;
+
+    if (!altCounter) {
+        altCounter = 1;
+    } else {
+        altCounter = 0;
+    }
 
     playCurrentSound();
 
@@ -397,7 +408,7 @@ void gameTick(bool &isOnGround, bool &isOnStairs) {
         player.mSpeed.mY = 0;
     }
 
-    std::vector<Actor> actorsToRemove;
+    vector<Actor> actorsToRemove;
 
     for (auto &arrow : arrows) {
         arrow.mPosition.mX += arrow.mSpeed.mX;
@@ -425,7 +436,7 @@ void gameTick(bool &isOnGround, bool &isOnStairs) {
 
     removeFrom(arrows, actorsToRemove);
 
-    std::vector<Item> itemsToRemove;
+    vector<Item> itemsToRemove;
 
     for (const auto &item : items) {
 
@@ -699,7 +710,7 @@ void prepareRoom(int room) {
     std::ifstream tileList(roomName.str());
     std::string buffer;
 
-    std::vector<std::string> tilesToLoad;
+    vector<std::string> tilesToLoad;
 
     while (tileList.good()) {
         std::getline(tileList, buffer);

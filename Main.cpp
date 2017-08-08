@@ -14,6 +14,10 @@
 #include <memory>
 #include <fstream>
 #include <sstream>
+
+using std::vector;
+using std::array;
+
 #include "NativeBitmap.h"
 #include "LoadImage.h"
 
@@ -22,7 +26,7 @@
 int desiredTimeSlice = 75;
 bool enableSecret = false;
 
-std::vector<std::vector<std::shared_ptr<odb::NativeBitmap>>> tiles;
+vector<vector<std::shared_ptr<odb::NativeBitmap>>> tiles;
 
 std::shared_ptr<odb::NativeBitmap> arrowSprite[2] = {
         odb::loadBitmap("arrow.png"),
@@ -92,10 +96,10 @@ std::shared_ptr<odb::NativeBitmap> hero[6][2] = {
         },
 };
 
-std::array<unsigned int, 320 * 200> imageBuffer;
-std::array<unsigned char, 320 * 200> buffer;
-std::array<unsigned char, 320 * 100 / 4> evenBuffer;
-std::array<unsigned char, 320 * 100 / 4> oddBuffer;
+array<unsigned int, 320 * 200> imageBuffer;
+array<unsigned char, 320 * 200> buffer;
+array<unsigned char, 320 * 100 / 4> evenBuffer;
+array<unsigned char, 320 * 100 / 4> oddBuffer;
 std::shared_ptr<odb::NativeBitmap> currentScreen = nullptr;
 
 double timeRendering = 0;
@@ -139,11 +143,11 @@ void clearBuffers() {
     std::fill(std::begin(oddBuffer), std::end(oddBuffer), 0);
 }
 
-std::vector<std::shared_ptr<odb::NativeBitmap>> loadSpriteList(std::string listName) {
+vector<std::shared_ptr<odb::NativeBitmap>> loadSpriteList(std::string listName) {
     std::ifstream tileList(listName);
     std::string buffer;
 
-    std::vector<std::shared_ptr<odb::NativeBitmap>> tilesToLoad;
+    vector<std::shared_ptr<odb::NativeBitmap>> tilesToLoad;
 
     while (tileList.good()) {
         std::getline(tileList, buffer);
@@ -152,7 +156,7 @@ std::vector<std::shared_ptr<odb::NativeBitmap>> loadSpriteList(std::string listN
     return tilesToLoad;
 }
 
-void loadTiles(std::vector<std::string> tilesToLoad) {
+void loadTiles(vector<std::string> tilesToLoad) {
     tiles.clear();
 
     for (const auto &tile : tilesToLoad) {
@@ -226,18 +230,22 @@ void copyImageBufferToVideoMemory() {
     int last = 0;
     auto currentImageBufferPos = std::begin(imageBuffer);
     auto currentBufferPos = std::begin(buffer);
-
+    bool dither = true;
     for (int y = 0; y < 200; ++y) {
 
         if (y < 0 || y >= 200) {
             continue;
         }
 
+        dither = !dither;
+
         for (int x = 0; x < 320; ++x) {
 
             if (x < 0 || x >= 320) {
                 continue;
             }
+
+            dither = !dither;
 
             origin = *currentImageBufferPos;
             last = *currentBufferPos;
@@ -251,7 +259,7 @@ void copyImageBufferToVideoMemory() {
             value = origin;
 
             if (0 < origin && origin < 4) {
-                if (((x + y) % 2) == 0) {
+                if (dither) {
                     value = 0;
                 } else {
                     value = origin;
@@ -263,7 +271,7 @@ void copyImageBufferToVideoMemory() {
             }
 
             if (origin >= 8) {
-                if (((x + y) % 2) == 0) {
+                if (dither) {
                     value = 3;
                 } else {
                     value = origin - 8;
@@ -423,7 +431,7 @@ void render() {
 
     auto sprite = hero[player.mStance][heroFrame];
 
-    if (((ticksUntilVulnerable <= 0) || ((counter % 2) == 0)) || paused) {
+    if (((ticksUntilVulnerable <= 0) || (altCounter == 0)) || paused) {
         y0 = (player.mPosition.mY);
         int spriteWidth = sprite->getWidth();
         y1 = sprite->getHeight() + y0;
@@ -515,13 +523,13 @@ void render() {
         }
 
         if (foe.mType == kSkeleton) {
-            pixelData = foeSprites[counter % 2]->getPixelData();
+            pixelData = foeSprites[altCounter]->getPixelData();
         } else if (foe.mType == kTinhoso) {
-            pixelData = tinhosoSprites[counter % 2]->getPixelData();
+            pixelData = tinhosoSprites[altCounter]->getPixelData();
         } else if (foe.mType == kHand) {
-            pixelData = handSprites[counter % 2]->getPixelData();
+            pixelData = handSprites[altCounter]->getPixelData();
         } else if (foe.mType == kCapiroto) {
-            pixelData = capirotoSprites[counter % 2]->getPixelData();
+            pixelData = capirotoSprites[altCounter]->getPixelData();
         } else if (foe.mType == kGargoyle) {
             if (foe.mHealth > 0) {
                 pixelData = gargoyleSprites[0]->getPixelData();
@@ -593,7 +601,7 @@ void render() {
         }
     }
 
-    if ((hasKey && ((counter % 2) == 0 || paused))) {
+    if ((hasKey && (altCounter == 0 || paused))) {
         y0 = 2;
         y1 = 32 + y0;
         x0 = 2;

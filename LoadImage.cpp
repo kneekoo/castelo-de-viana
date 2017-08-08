@@ -12,7 +12,6 @@
 #include <sys/farptr.h>
 #include <bios.h>
 #include <sys/nearptr.h>
-
 #include <cstdlib>
 #include <cstdio>
 #include <functional>
@@ -26,35 +25,32 @@
 #include <map>
 #include <array>
 #include <iostream>
-
 #include <conio.h>
-
-#include "NativeBitmap.h"
-#include "LoadImage.h"
-
 #include <memory>
 #include <string>
 #include <vector>
 #include <cstdlib>
 #include <cstring>
 
-#include "NativeBitmap.h"
+using std::vector;
+using std::array;
 
+#include "NativeBitmap.h"
+#include "LoadImage.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 
 #include "stb_image.h"
 
-
 namespace odb {
 
-    std::vector<char> readToBuffer(FILE *fileDescriptor) {
+    vector<char> readToBuffer(FILE *fileDescriptor) {
         const unsigned N = 1024;
 
         fseek(fileDescriptor, 0, SEEK_END);
         auto endPos = ftell(fileDescriptor);
         rewind(fileDescriptor);
-        std::vector<char> total(endPos);
+        vector<char> total(endPos);
         auto writeHead = std::begin(total);
 
         for (int c = 0; c < endPos; ++c) {
@@ -75,7 +71,7 @@ namespace odb {
     }
 
 
-    std::vector<char> loadBinaryFileFromPath(const std::string &path) {
+    vector<char> loadBinaryFileFromPath(const std::string &path) {
         FILE *fd;
 
         fd = fopen(path.c_str(), "rb");
@@ -84,7 +80,7 @@ namespace odb {
             exit(0);
         }
 
-        std::vector<char> toReturn = readToBuffer(fd);
+        vector<char> toReturn = readToBuffer(fd);
         fclose(fd);
 
         return toReturn;

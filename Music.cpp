@@ -15,11 +15,13 @@
 #include <fstream>
 #include <sstream>
 #include "NativeBitmap.h"
-#include "LoadImage.h"
-
-
 #include <string>
 #include <vector>
+
+using std::vector;
+using std::array;
+
+#include "LoadImage.h"
 #include "Game.h"
 
 void playMusic(const std::string &music) {
