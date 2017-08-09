@@ -16,10 +16,12 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <EASTL/vector.h>
+#include <EASTL/array.h>
 
-using std::vector;
-using std::array;
 using std::string;
+using eastl::array;
+using eastl::vector;
 
 #include "NativeBitmap.h"
 #include "LoadImage.h"

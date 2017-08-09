@@ -14,10 +14,12 @@
 #include <memory>
 #include <fstream>
 #include <sstream>
+#include <EASTL/vector.h>
+#include <EASTL/array.h>
 
-using std::vector;
-using std::array;
 using std::string;
+using eastl::vector;
+using eastl::array;
 
 #include "NativeBitmap.h"
 #include "LoadImage.h"
@@ -26,6 +28,15 @@ using std::string;
 
 int desiredTimeSlice = 75;
 bool enableSecret = false;
+
+
+void* operator new[](size_t size, const char* pName, int flags, unsigned debugFlags, const char* file, int line) {
+    return malloc(size);
+}
+
+void* operator new[](size_t size, size_t alignment, size_t alignmentOffset, const char* pName, int flags, unsigned debugFlags, const char* file, int line) {
+    return malloc(size);
+}
 
 vector<vector<std::shared_ptr<odb::NativeBitmap>>> tiles;
 
@@ -658,7 +669,7 @@ void render() {
 
     if (hasBossOnScreen) {
         gotoxy(1, 23);
-        std::cout << currentBossName << ": ";
+//        std::cout << currentBossName << ": ";
 
         int bossHealth = 0;
 

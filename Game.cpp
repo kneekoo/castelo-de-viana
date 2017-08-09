@@ -14,10 +14,12 @@
 #include <memory>
 #include <fstream>
 #include <sstream>
+#include <EASTL/vector.h>
+#include <EASTL/array.h>
 
-using std::vector;
-using std::array;
 using std::string;
+using eastl::vector;
+using eastl::array;
 
 #include "Game.h"
 
